@@ -32,6 +32,7 @@ class ViewConcertListingTest extends TestCase
            'additional_information' => 'For tickets, call (555) 555-555'
         ]);
 
+
         // Act
         // View the concert listing
         $response = $this->get('/concerts/'. $concert->id);
