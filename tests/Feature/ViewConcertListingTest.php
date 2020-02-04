@@ -10,7 +10,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ViewConcertListingTest extends TestCase
 {
-    use DatabaseMigrations;
 
     /**
      * @test
@@ -32,10 +31,11 @@ class ViewConcertListingTest extends TestCase
            'additional_information' => 'For tickets, call (555) 555-555'
         ]);
 
-
         // Act
         // View the concert listing
-        $response = $this->get('/concerts/'. $concert->id);
+        $response = $this->get('/concerts/' . $concert->id);
+
+        $response->assertStatus(200);
 
         // Assert
         //  See the concert details
