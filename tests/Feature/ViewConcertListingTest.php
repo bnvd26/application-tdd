@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-
 class ViewConcertListingTest extends TestCase
 {
 
@@ -34,7 +33,6 @@ class ViewConcertListingTest extends TestCase
         // Act
         // View the concert listing
         $response = $this->get('/concerts/' . $concert->id);
-
         $response->assertStatus(200);
 
         // Assert
