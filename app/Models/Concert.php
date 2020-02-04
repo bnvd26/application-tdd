@@ -8,6 +8,13 @@ class Concert extends Model
 {
     protected $guarded = [];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['date'];
+
     public function getFormattedDateAttribute()
     {
         return $this->date->format('F j, Y');
