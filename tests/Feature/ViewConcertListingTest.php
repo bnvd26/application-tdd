@@ -9,15 +9,14 @@ use Tests\TestCase;
 
 class ViewConcertListingTest extends TestCase
 {
-
     /**
      * @test
      */
-    public function user_can_view_a_concert_listing()
+    public function user_can_view_a_published_concert_listing()
     {
         // Arrange
         // Create a concert
-        $concert = Concert::create([
+        $concert = factory(Concert::class)->states('published')->create([
            'title' => 'The Red Chord',
            'subtitle' => 'with Animosity and Letghracy',
            'date' => Carbon::parse('December 13, 2016 8:00pm'),
@@ -27,13 +26,12 @@ class ViewConcertListingTest extends TestCase
            'city' => 'Laraville',
            'state' => 'PHP',
            'zip' => '17916',
-           'additional_information' => 'For tickets, call (555) 555-555'
+           'additional_information' => 'For tickets, call (555) 555-555',
         ]);
 
         // Act
         // View the concert listing
         $response = $this->get('/concerts/' . $concert->id);
-        $response->assertStatus(200);
 
         // Assert
         //  See the concert details
@@ -45,5 +43,17 @@ class ViewConcertListingTest extends TestCase
         $response->assertSee('123 Example Lane');
         $response->assertSee('Laraville, PHP 17916');
         $response->assertSee('For tickets, call (555) 555-555');
+    }
+
+    /**
+     * @test
+     */
+    public function user_cannot_view_unpublished_concert_listing()
+    {
+        $concert = factory(Concert::class)->states('unpublished')->create();
+
+        $response = $this->get('/concerts/' . $concert->id);
+
+        $response->assertStatus(404);
     }
 }

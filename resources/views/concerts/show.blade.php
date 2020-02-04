@@ -6,4 +6,5 @@
 {{ $concert->venue_address }}
 {{ $concert->city }}, {{ $concert->state }} {{ $concert->zip }}
 {{ $concert->additional_information }}
+{{ $concert->published_at }}
 
