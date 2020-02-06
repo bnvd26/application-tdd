@@ -1,0 +1,30 @@
+<?php
+
+
+namespace App\Billing;
+
+
+class FakePaymentGateway implements PaymentGateway
+{
+    public $charges;
+
+    public function __construct()
+    {
+        $this->charges = collect();
+    }
+
+    public function getValidTestToken()
+    {
+        return "valid-token";
+    }
+
+    public function charge($amount, $token)
+    {
+        return $this->charges[] = $amount;
+    }
+
+    public function totalCharges()
+    {
+        return $this->charges->sum();
+    }
+}
