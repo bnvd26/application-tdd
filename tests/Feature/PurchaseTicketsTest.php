@@ -13,6 +13,7 @@ use Tests\TestCase;
 
 class PurchaseTicketsTest extends TestCase
 {
+
     /**
      * @test
      */
@@ -51,5 +52,29 @@ class PurchaseTicketsTest extends TestCase
         $this->assertNotNull($order);
 
         $this->assertEquals(3,  $ticket->count());
+    }
+
+    /**
+     * @test
+     */
+    public function email_is_required_to_purchase_tickets()
+    {
+        $this->withoutMiddleware();
+
+        $paymentGateway = new FakePaymentGateway;
+
+        // Arrange
+        // Create a concert
+        $concert = factory(Concert::class)->create();
+
+        // Act
+        // Purchase concert tickets
+        $response = $this->json('POST', '/concerts/' . $concert->id . '/orders' , [
+            'ticket_quantity' => 3,
+            'payment_token' => $paymentGateway->getValidTestToken()
+        ]);
+
+        $response->assertStatus(422);
+        /*$this->assertArrayHasKey('email', $response->decodeResponseJson());*/
     }
 }
