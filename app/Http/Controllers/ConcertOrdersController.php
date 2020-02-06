@@ -15,7 +15,9 @@ class ConcertOrdersController extends Controller
     public function store($concert)
     {
         $this->validate(request(), [
-            'email' => 'required'
+            'email' => 'required|email',
+            'ticket_quantity' => 'required|numeric|min:1',
+            'payment_token' => 'required'
         ]);
 
         $paymentGateway = new FakePaymentGateway;
