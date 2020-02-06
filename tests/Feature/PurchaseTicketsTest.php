@@ -158,6 +158,30 @@ class PurchaseTicketsTest extends TestCase
 
         $response->assertStatus(422);
         $this->assertArrayHasKey('message', $response->decodeResponseJson());
+    }
+
+    /**
+     * @test
+     */
+    public function order_is_not_created_payment_fails()
+    {
+        $this->withoutMiddleware();
+
+        $paymentGateway = new FakePaymentGateway;
+
+        $concert = factory(Concert::class)->create();
+
+        $response = $this->orderTickets($concert, [
+            'ticket_quantity' => 1,
+            'email' => 'testi@example.com',
+            'payment_token' => 'invalid-payment-token'
+        ]);
+
+        $order = Order::where('email', 'testi@example.com')->first();
+
+        $this->assertNull($order);
+
+        $response->assertStatus(422);
 
     }
 }
